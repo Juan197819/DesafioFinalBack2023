@@ -1,0 +1,478 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtiene todos los productos
+      tags: 
+        -  Productos
+      responses:
+        200:
+          description: Los productos se obtuvieron correctamente de la  Base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/products/getAllProducts'      
+        500:
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorServer'      
+    post:
+      summary: Crea un nuevo producto en la Base de datos 
+      tags:
+        - Productos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/bodyNewProducts'
+        required: true
+      responses:
+        200:
+          description: El producto se creo correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/products/newProduct'
+        400:
+          description: Error de validacion de campos de la peticion del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorValidation'
+        403:
+          description: El acceso fue denegado para este recurso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        500:
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorServer'      
+  /api/products/{pid}:
+    get:
+      summary: Obtiene un producto por id de la Base de datos
+      tags:
+        - Productos
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Id Mongo del producto buscado
+        schema: 
+          type: string
+      responses:
+        200:
+          description: El producto se obtuvo por ID correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/products/getProductById'
+        400:
+          description: Error en el formato o en el tipo de dato del ID pasado por parametro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        404:
+          description: El producto no fue encontrado en la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        500:
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorServer'      
+    put:
+      summary: Edita un producto por id de la Base de datos
+      tags:
+        -  Productos
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Id Mongo del producto buscado
+        schema: 
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/bodyUpdateProducts'
+        required: true
+      responses:
+        200:
+          description: El producto se modifico por ID correctamente
+          content:
+            application/json:
+              schema:
+                type: string
+        400:
+          description: Error en el formato o en el tipo de dato del ID pasado por parametro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        404:
+          description: El producto no fue encontrado en la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        500:
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorServer'      
+    delete:
+      summary: Elimina un producto por id de la Base de datos
+      tags:
+        -  Productos
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: Id Mongo del producto buscado
+        schema: 
+          type: string
+      responses:
+        200:
+          description: El producto se elimino por ID correctamente
+          content:
+            application/json:
+              schema:
+                type: string
+        400:
+          description: Error en el formato o en el tipo de dato del ID pasado por parametro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        404:
+          description: El producto no fue encontrado en la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        500:
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorServer'      
+  /api/carts/:
+    post:
+      summary: Crea un nuevo carrito vacio
+      tags:
+        - Carritos
+      responses:
+        200:
+          description: El carrito se creo correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/carts/newCart'
+        500:
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorServer'
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene todos los productos del carrito por ID del carrito
+      tags:
+        - Carritos
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id Mongo del carrito buscado
+        schema: 
+          type: string
+      responses:
+        200:
+          description: Obtiene el carrito por ID correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schema/carts/getProductsToCart'
+        400:
+          description: Error en el formato o en el tipo de dato del ID pasado por parametro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        404:
+          description: El carrito no fue encontrado en la base de datos o se encontraba vacio
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        500:
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorServer'      
+    put:
+      summary: Edita el carrito completo de la Base de datos
+      tags:
+        - Carritos
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id Mongo del carrito buscado
+        schema: 
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/updateCartComplet'
+        required: true
+      responses:
+        200:
+          description: El carrito se modifico por ID correctamente
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Producto actualizado correctamente
+        400:
+          description: Error en el formato o en el tipo de dato del ID pasado por parametro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        404:
+          description: El carrito no fue encontrado en la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        500:
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorServer'      
+    delete:
+      summary: Elimina un producto por id de la Base de datos
+      tags:
+        - Carritos
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id Mongo del carrito buscado
+        schema: 
+          type: string
+      responses:
+        200:
+          description: El carrito se vacio por ID correctamente
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Producto eliminado correctamente
+        400:
+          description: Error en el formato o en el tipo de dato del ID pasado por parametro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        404:
+          description: El carrito no fue encontrado en la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        500:
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorServer'      
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agrega un producto por id a un carrito de la Base de datos
+      tags:
+        - Carritos
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id Mongo del carrito buscado
+        schema: 
+          type: string
+      - name: pid
+        in: path
+        required: true
+        description: Id Mongo del producto a agregar
+        schema: 
+          type: string
+      responses:
+        200:
+          description: El producto se agrego al carrito correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schema/carts/addProductToCart'
+        400:
+          description: Error en el formato o en el tipo de dato del o los IDs pasados por parametro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        404:
+          description: El carrito o el producto no fue encontrado en la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        500:
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorServer'      
+  /api/carts/{cid}/products/{pid}:
+    put:
+      summary: Actualiza la cantidad de un producto de un carrito determinado por id
+      tags:
+        - Carritos
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id Mongo del carrito buscado
+        schema: 
+          type: string
+      - name: pid
+        in: path
+        required: true
+        description: Id Mongo del producto a modificar en cantidad
+        schema: 
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: 
+                quantity: 
+                  type: number
+                  description: Nueva cantidad del producto 
+        required: true
+      responses:
+        200:
+          description: El producto del carrito solicitado se actualizo en cantidad correctamente
+          content:
+            application/json:
+              schema:
+                type: string
+                example: La cantidad del producto se modifico correctamente
+        404:
+          description: El carrito o el producto no fue encontrado en la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        500:
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorServer'      
+    delete:
+      summary: Elimina un producto de un carrito por id
+      tags:
+        - Carritos
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id Mongo del carrito buscado
+        schema: 
+          type: string
+      - name: pid
+        in: path
+        required: true
+        description: Id Mongo del producto a eliminar del carrito
+        schema: 
+          type: string
+      responses:
+        200:
+          description: El producto se elimino por ID correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schema/carts/addProductToCart'
+        400:
+          description: Error en el formato o en el tipo de dato del o los IDs pasados por parametro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        404:
+          description: El carrito o el producto no fueron encontrados en la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        500:
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorServer'      
+  /api/carts/{cid}/purchase/:
+    post:
+      summary: Genera la compra de un carrito
+      tags:
+        - Carritos
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: Id del carrito a comprar
+        schema: 
+          type: string
+      responses:
+        200:
+          description: El producto se modifico por ID correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/carts/buyCart'
+        400:
+          description: Error en el formato o en el tipo de dato del ID pasado por parametro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        404:
+          description: El carrito no fue encontrado o estaba vacio en la base de datos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorAuthorizatioAndBadRequest'
+        500:
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schema/errors/errorServer'

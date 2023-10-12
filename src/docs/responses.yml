@@ -1,0 +1,267 @@
+components:
+  schema:
+    products:
+      newProduct:
+        type: object
+        properties:
+          _id:
+            type: string
+            description: ID autogenerado de Mongo
+          title: 
+            type: string
+            description: Nombre del producto
+          description: 
+            type: string
+            description: Descripcion del producto
+          code: 
+            type: string
+            description: Codigo interno del producto
+          status: 
+            type: boolean
+            description: Estado del producto
+          price: 
+            type: number
+            description: Precio del producto
+          stock: 
+            type: number
+            description: Cantidad disponible del producto
+          category: 
+            type: string
+            description: Categoria del producto
+          thumbnail: 
+            type: array
+            description: Array de URL de imagenes del producto  
+        example:
+          _id: 64945f5d07398c853cdd66de
+          title: Globo Terraqueo
+          status: false
+          description: Globo Terraqueo 30cm Ø Con Base Plastico
+          stock: 15
+          category: libreria
+          code: GLB040
+          price: 3550
+          thumbnail:
+            - https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png
+      getAllProducts:
+        type: array
+        items:
+          $ref: '#/components/schema/products/getProductById' 
+      getProductById:
+        type: object
+        properties:
+          id:
+            type: string
+            description: ID autogenerado de Mongo
+          title: 
+            type: string
+            description: Nombre del producto
+          description: 
+            type: string
+            description: Descripcion del producto
+          price: 
+            type: number
+            description: Precio del producto
+          stock: 
+            type: number
+            description: Cantidad disponible del producto
+          category: 
+            type: string
+            description: Categoria del producto
+          thumbnail: 
+            type: array
+            description: Array de URL de imagenes del producto  
+        example:
+          id: 64945f5d07398c853cdd66de
+          title: Globo Terraqueo
+          description: Globo Terraqueo 30cm Ø Con Base Plastico
+          stock: 15
+          category: libreria
+          price: 3550
+          thumbnail:
+            - https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png
+    errors:
+      errorServer:
+        type: object
+        properties:
+          error:
+            type: string
+            description: Nombre del error 
+          status: 
+            type: number
+            description: Codigo de estado del error 
+          message: 
+            type: string
+            description: Descripción del error
+          detailsError: 
+            type: string
+            description: Detalles especificos del tipo de error
+        example:
+          error: Internal Server Error
+          status: 500
+          message: connect ECONNREFUSED 127.0.0.1:27017
+          detailsError: Type MongoServerSelectionError
+      errorAuthorizatioAndBadRequest:
+        type: object
+        properties:
+          error:
+            type: string
+            description: Nombre del error 
+          status: 
+            type: number
+            description: Codigo de estado del error 
+          message: 
+            type: string
+            description: Descripción del error
+        example:
+          error: Forbidden
+          status: 403
+          message: Access denied!! (Route only for administrators)
+      errorValidation:
+        type: object
+        properties:
+          error:
+            type: string
+            description: Nombre del error 
+          status: 
+            type: number
+            description: Codigo de estado del error 
+          message: 
+            type: string
+            description: Descripción del error
+          detailsError: 
+            type: object
+            properties:
+              incorrectlyEnteredFields:
+                type: object
+                description: Objeto donde cada key es un campo de la peticion enviada que tiene error de validacion. El valor de dicha key es un mensaje que detalla el tipo de valor requerido versus el tipo de valor recibido
+        example:
+          error: Bad Request
+          status: 400
+          message: Error saving resource, en route /api/products incomplete or incorrect data!
+          detailsError: 
+            incorrectlyEnteredFields:
+              stock: Key STOCK needs to datatype NUMBER, received value 'oo' of type STRING
+              category: Key CATEGORY needs to datatype STRING, received value '908' of type NUMBER
+    carts:
+      newCart:
+        type: object
+        properties:
+          _id:
+            type: string
+            description: ID autogenerado de Mongo
+          products: 
+            type: array
+            description: Array de productos vacio
+        example:
+          _id: 64945f5d07398c853cdd66de
+          products: []
+      getProductsToCart:
+        type: object
+        properties:
+          product:
+            $ref: '#/components/schema/products/newProduct'
+          quantity: 
+            type: number
+            description: Cantidad del producto solicitada
+          _id: 
+            type: string
+            description: ID autogenerado de Mongo
+        example:
+          product:
+            _id: 64945f5d07398c853cdd66de
+            title: Globo Terraqueo
+            description: Globo Terraqueo 30cm Ø Con Base Plastico
+            status: true
+            stock: 15
+            category: libreria
+            code: BEB012
+            price: 3550
+            thumbnail:
+              - https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png
+          quantity: 77
+          _id: 6526f7ce675fde1111921c3d
+      addProductToCart:
+        type: object
+        properties:
+          _id: 
+            type: ObjectId
+            description: ID del carrito
+          products:
+            type: array
+            items:
+              properties:
+                product:
+                  type: ObjectId
+                  description: Id del producto 
+                quantity: 
+                  type: number
+                  description: Cantidad del producto 
+                _id: 
+                  type: ObjectId
+                  description: ID autogenerado de Mongo
+        example:
+          _id: 6526f6c3675fde1111921c1e
+          products:
+          - product: 64945f5d07398c853cdd66df
+            quantity: 77
+            _id: 652831fb0baea08d210cf9a7
+          - product: 652831fb0baea08d210cf9a7
+            quantity: 10
+            _id: 652834bb20ba06d94b961839
+      buyCart:
+        type: object
+        properties:
+          message: 
+            type: string
+            description: Mensaje de informacion de la transaccion realizada
+          articleBuyed:
+            type: array
+            items:
+              properties:
+                product:
+                  type: string
+                  description: Nombre del producto 
+                description: 
+                  type: string
+                  description: Descripcion del producto
+                price: 
+                  type: string
+                  description:  Precio del producto
+                quantity: 
+                  type: number
+          articleOutOfStock:
+            type: array
+            items:
+              properties:
+                product:
+                  type: string
+                  description: Nombre del producto 
+                description: 
+                  type: string
+                  description: Descripcion del producto
+                price: 
+                  type: string
+                  description:  Precio del producto
+                quantity: 
+                  type: number
+                  description: Cantidad del producto 
+        example:
+          message: Transaction partially completed, currently some requested product/s are out of stock. An email has been sent to your registered mailbox fa@hotmail.com with the purchase information
+          articleBuyed:
+          - product: Soda
+            description: La mas refrescante
+            price: 2340
+            quantity: 77
+          - product: Naranja
+            description: La mas rica
+            price: 2340
+            quantity: 77
+          articleOutOfStock:
+          - product: Soda
+            description: La mas refrescante
+            price: 2340
+            quantity: 77
+          - product: Naranja
+            description: La mas rica
+            price: 2340
+            quantity: 77

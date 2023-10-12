@@ -1,0 +1,68 @@
+components:
+  parameters:
+    schemas:
+      bodyNewProducts:
+        type: object
+        required:
+          - title
+          - description
+          - stock
+          - category
+          - code
+          - price
+          - price
+        properties:
+          title: 
+            type: string
+          description: 
+            type: string
+          stock: 
+            type: number
+          category: 
+            type: string
+          code: 
+            type: string
+          price: 
+            type: number
+        example: 
+          title: Globo Terraqueo
+          description: Globo Terraqueo 30cm Ø Con Base Plastico
+          stock: 15
+          category: libreria
+          code: GLB040
+          price: 3550
+      bodyUpdateProducts:
+        type: object
+        properties:
+          title: 
+            type: string
+          description: 
+            type: string
+          stock: 
+            type: number
+          category: 
+            type: string
+          code: 
+            type: string
+          price: 
+            type: number
+        example: 
+          title: Globo Terraqueo
+          description: Globo Terraqueo 30cm Ø Con Base Plastico
+          stock: 15
+          category: libreria
+          code: GLB040
+          price: 3550
+      updateCartComplet:
+        type: array
+        items: 
+          properties:
+            product:
+              type: ObjectId
+              description: ID de producto Mongo a agregar   
+            quantity: 
+              type: number
+              description: Cantidad del producto agregado
+        example:
+        - product: 64945f5d07398c853cdd66de
+          quantity: 77

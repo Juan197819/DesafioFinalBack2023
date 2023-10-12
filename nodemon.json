@@ -1,0 +1,5 @@
+{
+  "watch": ["*.js", "*.yml", "*.env"],
+  "ext": "js yml env",
+  "exec": "node app.js"
+}
