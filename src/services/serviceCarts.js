@@ -1,5 +1,5 @@
 import config from '../config/configEnv.js';
-import sendEmail from '../config/configMail.js';
+import sendEmail, { purchaseData } from '../config/configMail.js';
 import { dtoProductToTicket } from '../dtos/dtoProductToTicket.js';
 import {dtoTicket} from '../dtos/dtoTicket.js'
 const {default: daoCart} = await import(`../daos/${config.PERSISTENCE}/daoCarts.js`)
@@ -71,7 +71,7 @@ class ServiceCarts {
                 await daoTickets.addTickets(ticket)
                 await this.serviceUpdateAllProductsToCart(cid, productsOutOfStock)                
                 articleBuyed = dtoProductToTicket(productsToBuy)
-                await sendEmail('Venta Online: Transacción Aprobada', { ...ticket, ...user, articleBuyed })
+                await sendEmail('Venta Online: Transacción Aprobada', purchaseData({ ...ticket, ...user, articleBuyed }), ticket.purchaser )
             }
             let message
             let msg = `An email has been sent to your registered mailbox ${user.email} with the purchase information`

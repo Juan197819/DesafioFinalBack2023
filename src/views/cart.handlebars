@@ -10,7 +10,7 @@
                     <th>Precio</th>
                     <th>Cantidad</th>
                     <th>Categoria</th>
-                    {{!-- <th colSpan="2">Subtotal</th> --}}
+                    <th>Subtotal</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,22 +21,28 @@
                     </td>
                     <td>{{this.title}}</td>
                     <td>{{this.description}}</td>
-                    <td>{{this.price}}</td>
-                    <td>{{this.quantity}}</td>
+                    <td class="precio">$<span>{{this.price}}</span></td>
+                    <td class="cantidad">{{this.quantity}}</td>
                     <td>{{this.category}}</td>
+                    <td class="subtotal">$ <span></span></td>
                 </tr>
                 {{/each}}
             </tbody>
-
-            {{!-- <tfoot>
-            <tr>
-                <th colSpan="6">
-                <span className='total' id='valorCarritoTotal'>Total valor del carrito ${valorCarrito.toFixed(2)}</span>
-                </th>
-            </tr>
-            </tfoot> --}}
+            <tfoot>
+                <tr>
+                    <th colSpan="6">
+                        Total valor del carrito: 
+                    </th>
+                    <th>
+                        $  <span class='total' id='valorCarritoTotal'></span>
+                    </th>
+                </tr>
+            </tfoot>
         </table>
+        <button onclick="return buyCart('{{cid}}')">Comprar carrito</button>
         {{else}}
     <h1>Carrito Vacio</h1>
     {{/if}}
 </div>
+<script>
+</script>

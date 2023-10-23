@@ -1,12 +1,15 @@
 import config from '../config/configEnv.js';
 import logger from '../config/configWinston.js';
+import { errorCustom } from '../middleware/errorHandler.js';
 import { repository } from '../repository/repository.js';
 const { default: daoProducts } = await import(`../daos/${config.PERSISTENCE}/daoProducts.js`)
 logger.info('Persistence: ' +config.PERSISTENCE)
 
 class ServiceProducts {
-    async serviceAddProduct (product){
+    async serviceAddProduct (product, email){
         try {
+            if (email != 'adminCoder@coder.com') product.owner = email
+            console.log(product)
             const newProduct = await daoProducts.addProduct(product)
             return newProduct
         } catch (error) {
@@ -38,8 +41,11 @@ class ServiceProducts {
             throw error
         }
     }
-    async serviceUpdateProduct (id, product){
+    async serviceUpdateProduct (id, product, email){
         try {
+            if (email!=product.owner) {
+                throw new errorCustom('Forbidden', 403, 'Access denied!! You can only modify your own products!')
+            }
             const response = await daoProducts.updateProduct(id, product)
             return response
         } catch (error) {

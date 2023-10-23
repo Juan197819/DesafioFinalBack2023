@@ -1,8 +1,9 @@
 import passport from "passport";
 import { Strategy as StrategyLocal } from "passport-local";
-import { isValidPass, serviceUsers } from "../services/serviceUsers.js";
-import { repository } from "../repository/repository.js";
+import { serviceUsers } from "../services/serviceUsers.js";
 import { errorCustom } from "../middleware/errorHandler.js";
+import { serviceSessions } from "../services/serviceSessions.js";
+import { isValidPass } from "../utils/isValidPass.js";
 
 const strategyOptions = {
     usernameField: 'email',
@@ -12,7 +13,8 @@ async function login(req, email, password, done) {
     try {
         const user = await serviceUsers.serviceGetByEmail(email)
         if (user && isValidPass(password, user?.password)) {
-            return done(null,user)    
+            const userUpdated = await serviceSessions.updateLastConnection(email)
+            return done(null, userUpdated)    
         }
         //Este IF analiza si el request que llega al PASSPORT es "/loginViews" (viene desde las vistas  de handlebars) entonces devuelve la vista de error, si no devuelve el error en formato JSON.
         if (req.url == '/loginViews') {
@@ -29,6 +31,8 @@ async function register(req, email, password, done) {
     try {
         const user = await serviceUsers.serviceGetByEmail(email)
         if (user) {
+        //Igual que con la funcion "login" este IF analiza si el request que llega al PASSPORT es "/registerViews" (viene desde las vistas  de handlebars) entonces devuelve la vista de error, si no devuelve el error en formato JSON.
+
             if (req.url == '/registerViews') {
                 return done(null,false)    
             } else {
@@ -51,7 +55,8 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = await repository.repositoryGetUsersById(id);
+        const user = await serviceUsers.serviceGetById(id);
+
         return done(null, user);        
     } catch (error) {
         throw error

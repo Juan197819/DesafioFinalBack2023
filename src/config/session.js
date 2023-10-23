@@ -7,7 +7,7 @@ let mongoUrl = 'mongodb://localhost:27017/ecommerceLocal'
 if (config.NODE_ENV == 'production') mongoUrl = config.MONGO_ATLAS
 export const configSession = session({
     secret: '1234',
-    saveUninitialized: true,
+    saveUninitialized: false,
     resave: false,
     store: new MongoStore({
         mongoUrl,
@@ -16,6 +16,6 @@ export const configSession = session({
     }),
     rolling: true,
     cookie: {
-        // maxAge: 100000
+        // maxAge: 10000
     }
 })

@@ -6,12 +6,14 @@ import { routerViews } from "./routerViews.js";
 import { routerSessions } from "./routerSessions.js";
 import { isUser } from "../middleware/isUser.js";
 import { routerTest } from "./routerTesting.js";
+import { routerUsers } from "./routerUsers.js";
 
 const router = Router()
 
 router.use('/api/products', isAdmin, routerProducts)
 router.use('/api/carts', isUser, routerCarts)
 router.use('/api/sessions', routerSessions)
+router.use('/api/users', routerUsers)
 router.use('/', routerTest)
 router.use('/', routerViews)
 

@@ -1,8 +1,11 @@
+import logger from "../config/configWinston.js";
+
 export function authTrue(req, res, next) {
+    logger.debug('Autenticacion: '+ req.isAuthenticated())
    if (req.isAuthenticated()) {
         next()
    } else {
-       (req.method == 'GET') ? next() : res.status(300).redirect('/login')
+        res.status(300).redirect('/login');
     }
 }
 export function authFalse(req, res, next) {

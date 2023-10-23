@@ -1,15 +1,15 @@
 import config from '../config/configEnv.js';
 import { dtoProfile } from '../dtos/dtoProfile.js';
 const { default: daoProducts } = await import(`../daos/${config.PERSISTENCE}/daoProducts.js`)
-import { dtoProduct, dtoArrayProducts } from "../dtos/dtoGetProducts.js"
-import { serviceUsers } from '../services/serviceUsers.js';
+import { dtoProduct } from "../dtos/dtoGetProduct.js"
+import daoUsers from '../daos/MongoDB/daoUsers.js';
 
 class Repository {
     async repositoryGetProducts(reqQuery) {
         try {
             let { limit, page, sort, ...query } = reqQuery
             const response = await daoProducts.getProducts(limit, page, sort, query)
-            const products = dtoArrayProducts(response)
+            const products = response.payload.map(dtoProduct)
             return products 
         } catch (error) {
             throw error
@@ -19,7 +19,7 @@ class Repository {
         try {
             let { limit, page, sort, ...query } = reqQuery
             const response = await daoProducts.getProducts(limit, page, sort, query)
-            const products = dtoArrayProducts(response)
+            const products = response.payload.map(dtoProduct)
             return {products,...response} 
         } catch (error) {
             throw error
@@ -35,7 +35,7 @@ class Repository {
     }
     async repositoryGetUsersById(id) {
         try {
-            const user = await serviceUsers.serviceGetById(id);
+            const user = await daoUsers.getUserById(id)
             return dtoProfile(user) 
         } catch (error) {
             throw error
@@ -44,6 +44,14 @@ class Repository {
     async repositoryGetUserFromSession(user) {
         try {
             return dtoProfile(user) 
+        } catch (error) {
+            throw error
+        }
+    }
+    async repositoryGetAllUsers() {
+        try {
+            const users =  await daoUsers.getAllUsers()
+            return users.map(dtoProfile)
         } catch (error) {
             throw error
         }

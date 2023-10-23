@@ -5,7 +5,8 @@ class ControllerProducts {
     async controllerAddProduct (req, res, next){
         try {
             const product = req.body
-            const response = await serviceProducts.serviceAddProduct(product)
+            const {email} = req.user
+            const response = await serviceProducts.serviceAddProduct(product, email)
             res.status(200).json(response)           
         } catch (error) {
             next(error)
@@ -32,7 +33,8 @@ class ControllerProducts {
         try {
             const product = req.body
             const {pid} = req.params
-            res.status(200).json(await serviceProducts.serviceUpdateProduct(pid, product))
+            const {email} = req.user
+            res.status(200).json(await serviceProducts.serviceUpdateProduct(pid, product, email))
         } catch (error) {
             next(error)
         }

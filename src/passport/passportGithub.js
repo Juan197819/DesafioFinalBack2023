@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy as StrategyGithub } from "passport-github2";
-import { isValidPass, serviceUsers } from "../services/serviceUsers.js";
+import { serviceUsers } from "../services/serviceUsers.js";
 import { dtoProfile } from "../dtos/dtoProfile.js";
 
 //!    CREDENCIALES PROPIAS DE GITHUB (ME DA ERROR DE PERMISOS)

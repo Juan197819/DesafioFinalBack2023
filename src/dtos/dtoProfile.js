@@ -5,6 +5,7 @@ export function dtoProfile(user) {
         apellido: user.lastName,
         email: user.email,
         edad: user.age,
-        rol: user.role == 'admin' ? 'Administrador' : 'Usuario'
+        rol: user.role == 'admin' ? 'Administrador' : user.role == 'user'? 'Usuario': 'Premium',
+        ultimo_ingreso: (user.lastConnection),
     }
 }

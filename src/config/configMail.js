@@ -10,13 +10,14 @@ const transport = createTransport({
         pass: config.PASS_NODEMAILER
     }
 })
-async function sendEmail (subject, bodyMail){
+
+async function sendEmail (subject, bodyMail, receiver){
     try {
         const info = await transport.sendMail({
             from: config.EMAIL_TO_SEND,
-            to: config.EMAIL_TO_RECEIVE_FOR_TEST||bodyMail.purchaser, 
-            subject: subject,
-            html: purchaseData(bodyMail)
+            to: receiver, 
+            subject,
+            html: bodyMail
             }       
         )
         logger.info(JSON.stringify(info))

@@ -22,6 +22,27 @@ class DaoUsers {
             throw error
         }
     }
+    async getAllUsers(filter) {
+        try {
+            return await ModelUsers.find(filter)
+        } catch (error) {
+            throw error
+        }
+    }
+    async deleteUsers(filter) {
+        try {
+            return await ModelUsers.deleteMany(filter)
+        } catch (error) {
+            throw error
+        }
+    }
+    async updateUsers(email, newObject) {
+        try {
+            return await ModelUsers.findOneAndUpdate(email, newObject, {new: true})
+        } catch (error) {
+            throw error
+        }
+    }
 }
 const daoUsers = new DaoUsers()
 

@@ -69,7 +69,7 @@ class ControllerViews{
                     }
                 })
             }
-            res.status(200).render('cart', { newMap, ...req.user})
+            res.status(200).render('cart', { newMap, ...req.user, cid})
         } catch (error) { 
             next(error)
         }
@@ -93,7 +93,7 @@ class ControllerViews{
             req.session.destroy(err=>{
                 if (err) throw new errorCustom('Internal Server Error', 500, 'An internal error occurred in the express-session module when trying to delete the current session!')
                 logger.info('Session delete!!')
-                res.status(200).redirect('/login')   
+                res.clearCookie('connect.sid').status(200).redirect('/login')   
             })
         } catch (error) { 
             next(error)
