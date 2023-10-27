@@ -45,7 +45,8 @@ class ServiceUsers {
     }
     async serviceDeleteOldUsers() {
         try {
-            let filterToDelete = { lastConnection: { $lt: getHourLocal(1) }, role: {$ne:'admin'} }
+            let hoursLimit = 1000*60*60*48 //Horas sin conexion (48 en este caso)
+            let filterToDelete = { lastConnection: { $lt: getHourLocal(hoursLimit) }, role: {$ne:'admin'} }
             let usersDeleted = await daoUsers.getAllUsers(filterToDelete)
             if (usersDeleted.length) {
                 
