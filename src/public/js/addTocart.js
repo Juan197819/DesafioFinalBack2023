@@ -22,31 +22,35 @@ let nav, h1, email, rol
 
 /* ---------------- FUNCION PARA AGREGAR PRODUCTOS AL CARRITO EN NAVEGADOR---------------- */
 async function addToCart(pid, email) {
-    //1° VEZ SE CREA UN CARRITO Y SE GUARDA EL ID EN localStorage
-    //2° en adelante SE TOMA ESE ID PARA NO VOLVER A CREARLO
-    let idCart = localStorage.getItem(email)
-    if (!idCart) {
-        //CREACION DE CARRITO
-        let response = await fetch(`/api/carts/`, {
+    try {
+        //1° VEZ SE CREA UN CARRITO Y SE GUARDA EL ID EN localStorage
+        //2° en adelante SE TOMA ESE ID PARA NO VOLVER A CREARLO
+        let idCart = localStorage.getItem(email)
+        if (!idCart) {
+            //CREACION DE CARRITO
+            let response = await fetch(`/api/carts/`, {
+                method: 'POST'
+            })
+            let newCart = await response.json()
+            idCart = newCart._id
+
+            //GUARDADO DE ID DE CARRITO PARA EL RESTO DE PETICIONES
+            localStorage[email] = idCart
+            alert('Carrito creado ok')
+            document.getElementById('botonCarrito').setAttribute('href', `/carts/${idCart}`); //AL CREAR UN CARRITO SETEO LA RUTA DEL BOTON "Ir al carrito" CON EL NUEVO ID REEMPLAZANDO EL "cartEmpty"
+        }
+        //SE AGREGA PRODUCTO
+        let prod = await fetch(`/api/carts/${idCart}/product/${pid}`, {
             method: 'POST'
         })
-        let newCart = await response.json()
-        idCart = newCart._id
-
-        //GUARDADO DE ID DE CARRITO PARA EL RESTO DE PETICIONES
-        localStorage[email] = idCart
-        alert('Carrito creado ok')
-        document.getElementById('botonCarrito').setAttribute('href', `/carts/${idCart}`); //AL CREAR UN CARRITO SETEO LA RUTA DEL BOTON "Ir al carrito" CON EL NUEVO ID REEMPLAZANDO EL "cartEmpty"
-    }
-    //SE AGREGA PRODUCTO
-    let prod = await fetch(`/api/carts/${idCart}/product/${pid}`, {
-        method: 'POST'
-    })
-    prod = await prod.json()
-    if (prod.error) {
-        alert('Error al agregar producto!')
-    } else {
-        alert('Producto agregado con exito!!')
+        prod = await prod.json()
+        if (prod.error) {
+            alert('Error al agregar producto!')
+        } else {
+            alert('Producto agregado con exito!!')
+        }
+    } catch (error) {
+        console.error(error)
     }
 }
 let botonesBLOQUEADOS = document.querySelectorAll(`.botonAgregarCarrito`)
@@ -56,11 +60,11 @@ for (let i = 0; i < botonesBLOQUEADOS.length; i++) {
         botonesBLOQUEADOS[i].textContent = 'PRODUCTO PROPIO PROHIBIDO COMPRAR'
         botonesBLOQUEADOS[i].disabled = true
         botonesBLOQUEADOS[i].style.color = 'red'
-        botonesBLOQUEADOS[i].style.backgroundColor= 'white'
+        botonesBLOQUEADOS[i].style.backgroundColor = 'white'
     } else if (rol == 'Administrador') {
         botonesBLOQUEADOS[i].textContent = 'EL ADMINISTRADOR NO PUEDE COMPRAR'
         botonesBLOQUEADOS[i].disabled = true
         botonesBLOQUEADOS[i].style.color = 'blue'
-        botonesBLOQUEADOS[i].style.backgroundColor= 'white'
+        botonesBLOQUEADOS[i].style.backgroundColor = 'white'
     }
 }

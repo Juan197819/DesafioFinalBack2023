@@ -1,9 +1,10 @@
 import config from '../config/configEnv.js';
 import sendEmail, { purchaseData } from '../config/configMail.js';
-import daoProducts from '../daos/MongoDB/daoProducts.js';
 import { dtoProductToTicket } from '../dtos/dtoProductToTicket.js';
 import { dtoTicket } from '../dtos/dtoTicket.js'
 import { errorCustom } from '../middleware/errorHandler.js';
+
+const { default: daoProducts } = await import(`../daos/${config.PERSISTENCE}/daoProducts.js`)
 const { default: daoCart } = await import(`../daos/${config.PERSISTENCE}/daoCarts.js`)
 const { daoTickets } = await import(`../daos/${config.PERSISTENCE}/daoTickets.js`)
 

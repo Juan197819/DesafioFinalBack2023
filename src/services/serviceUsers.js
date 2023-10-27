@@ -9,7 +9,7 @@ const { default: daoUsers } = await import(`../daos/${config.PERSISTENCE}/daoUse
 class ServiceUsers {
     async serviceAddUser(user) {
         try {
-            if (user.email == config.ADMIN_EMAIL && user.password == config.ADMIN_PASSWORD) user.role = 'admin'
+            if (user.email == config.ADMIN_EMAIL ) user.role = 'admin'
             const objUser = {
                 ...user,
                 password: createHash(user.password),

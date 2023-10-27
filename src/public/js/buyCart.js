@@ -12,19 +12,23 @@ if (location.href != 'http://localhost:8080/carts/cartEmpty') {
     totalCarrito.innerHTML = total
 }
 async function buyCart(cid) {
-    const response = await fetch(`http://localhost:8080/api/carts/${cid}/purchase`, {
-        method: 'POST',
-    })
-    const r = await response.json()
-    if (r.articleOutOfStock.length) {
-        if (r.articleBuyed.length) {
-            alert(`Compra Realizada parcialmente, revise su casilla de correo para mas detalles...`)
+    try {
+        const response = await fetch(`http://localhost:8080/api/carts/${cid}/purchase`, {
+            method: 'POST',
+        })
+        const r = await response.json()
+        if (r.articleOutOfStock.length) {
+            if (r.articleBuyed.length) {
+                alert(`Compra Realizada parcialmente, revise su casilla de correo para mas detalles...`)
+            }
+            alert('Los productos que todavia figuran en su carrito actualmente no tienen stock')
+            location.reload()
+        } else {
+            localStorage.removeItem(localStorage.key(cid))
+            location.replace(`http://localhost:8080/carts/cartEmpty`)
+            alert('Carrito comprado con exito')
         }
-        alert('Los productos que todavia figuran en su carrito actualmente no tienen stock')
-        location.reload()
-    } else {
-        localStorage.removeItem(localStorage.key(cid))
-        location.replace(`http://localhost:8080/carts/cartEmpty`)
-        alert ('Carrito comprado con exito')
+    } catch (error) {
+        console.error(error)
     }
 }

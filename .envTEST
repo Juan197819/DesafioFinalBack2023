@@ -1,10 +1,8 @@
 //*  NODE_ENV= production || null =>Si el valor es "null" por defecto toma "development" 
 //*  PERSISTENCE= FileSystem || MongoDB
 //*  MONGO_ATLAS =     //URL MONGO ATLAS
-//*  EMAIL_TO_RECEIVE_FOR_TEST=   //use mi mail personal para probar que me llegara el correo
 //*  EMAIL_TO_SEND=          //Gmail propio creado para mandar mails de prueba
-//*  PASS_NODEMAILER=          //contraseña de nodemailer
+//*  PASS_NODEMAILER=          //contraseña de nodemailer propio
 
 // DATOS DE ADMINISTRADOR PARA MIDDLEWARE DE AUTORIZACIONES
 //*  ADMIN_EMAIL=
-//*  ADMIN_PASSWORD= 

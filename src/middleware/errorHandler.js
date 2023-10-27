@@ -31,5 +31,5 @@ export function errorHandler(error, req, res, next) {
     res.status(errCustom.status).json(errCustom)
 }
 process.on('uncaughtException', err => {
-    logger.fatal(`Error caught in "process.on uncaughtException", details: \n\n      ${err.stack}`)
+    logger.fatal(`Error caught in "process.on (uncaughtException)", details: \n\n      ${err.stack}`)
 })

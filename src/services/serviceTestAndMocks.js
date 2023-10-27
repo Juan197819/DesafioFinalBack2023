@@ -1,8 +1,10 @@
 import { faker } from '@faker-js/faker'
+import config from '../config/configEnv.js';
 import { loggerDev, loggerProd } from '../config/configWinston.js'
+const { default: daoProducts } = await import(`../daos/${config.PERSISTENCE}/daoProducts.js`)
 
-class ServiceTest {
-    async serviceTestMock(qty=5) {
+class ServiceTestAndMocks {
+    async serviceMocksProducts(qty=5) {
         try {
             let arrayProduct =[]
             for (let i = 0; i < qty; i++) {
@@ -14,11 +16,12 @@ class ServiceTest {
                     category: faker.commerce.department(),
                     code: faker.finance.currencyCode() +faker.finance.accountNumber(3),
                     thumbnail:[ faker.image.url()],
-                    price: faker.commerce.price({max:5000})
+                    price: faker.commerce.price({max:5000}),
+                    owner: faker.internet.email(),
                 }
                 arrayProduct.push(product)
             }
-            return arrayProduct
+            return await daoProducts.addProduct(arrayProduct)
         } catch (error) {
             throw error
         }
@@ -43,4 +46,4 @@ class ServiceTest {
         }
     }
 }
-export const serviceTest = new ServiceTest()
+export const serviceTestAndMocks = new ServiceTestAndMocks()

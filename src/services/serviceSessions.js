@@ -1,6 +1,7 @@
-import daoUsers from "../daos/MongoDB/daoUsers.js"
+import config from '../config/configEnv.js';
 import { repository } from "../repository/repository.js"
 import { getHourLocal } from "../utils/getHourLocal.js"
+const { default: daoUsers } = await import(`../daos/${config.PERSISTENCE}/daoUsers.js`)
 
 class ServiceSessions {
     async serviceGetUserFromSession(user) {
