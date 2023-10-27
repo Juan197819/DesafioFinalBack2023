@@ -5,7 +5,7 @@ import { getHourLocal } from "../utils/getHourLocal.js"
 class ServiceSessions {
     async serviceGetUserFromSession(user) {
         try {
-            const userCurrent = repository.repositoryGetUserFromSession(user)
+            const userCurrent = repository.repositoryGetUserRes(user)
             return userCurrent
         } catch (error) {
             throw error

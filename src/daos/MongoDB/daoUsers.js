@@ -1,3 +1,4 @@
+import { errorCustom } from "../../middleware/errorHandler.js";
 import { ModelUsers } from "./models/modelUsers.js";
 
 class DaoUsers {
@@ -10,14 +11,18 @@ class DaoUsers {
     }
     async getUserByEmail(email){
         try {
-            return await ModelUsers.find({email})
+            const user = await ModelUsers.find({ email })
+            if (!user) throw new errorCustom('Not Found', 404, `User with email ${email} not found, try again!!`)
+            return user
         } catch (error) {
             throw error
         }
     }
     async getUserById(id){
         try {
-            return await ModelUsers.findById(id)
+            const user = await ModelUsers.findById(id)
+            if (!user) throw new errorCustom('Not Found', 404, `User ID ${id} not found, try again!!`)
+            return user
         } catch (error) {
             throw error
         }
@@ -36,9 +41,11 @@ class DaoUsers {
             throw error
         }
     }
-    async updateUsers(email, newObject) {
+    async updateUsers(filter, newObject) {
         try {
-            return await ModelUsers.findOneAndUpdate(email, newObject, {new: true})
+            const user = await ModelUsers.findOneAndUpdate(filter, newObject, { new: true })
+            if (!user) throw new errorCustom('Not Found', 404, `User not found, try again!!`)
+            return user
         } catch (error) {
             throw error
         }

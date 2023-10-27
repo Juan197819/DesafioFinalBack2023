@@ -93,19 +93,32 @@ class DaoCarts {
             throw error   
         }
     }
+    async deleteCart(cid){
+        try {
+            const cart = await this.#getCartById(cid)
+            if (!cart.products.length) throw new errorCustom('Not Found', 404, 'The cart was already empty')
+            await ModelCarts.findByIdAndDelete(cid)
+            return 'The cart deleted correctly!!'
+        } catch (error) {
+            throw error   
+        }
+    }
     async buyCart(cid){
         try {
-            const products = await this.getProdToCart(cid)
+            const products = await this.getProdToCart(cid) //Traigo todos los productos del carrito
             let productsOutOfStock = []
             let productsToBuy = []
             let amount = 0
+
+            //Recorro los productos para ver uno a uno cual tengo stock suficiente (se agrega al array "productsToBuy" ) y cual no tiene suficiente stock (se agrega al array "productsOutOfStock")
+
             for (const prod of products) {
                 if (prod.quantity <= prod.product.stock) {
-                    await daoProducts.updateProduct(prod.product._id, { stock: prod.product.stock - prod.quantity })
-                    productsToBuy.push(prod)
-                    amount += prod.product.price* prod.quantity
+                    await daoProducts.updateProduct(prod.product._id, { stock: prod.product.stock - prod.quantity }) //Actualizo el stock de los productos comprados
+                    productsToBuy.push(prod) //Pusheo los productos con stock en el array "productsToBuy" para enviarlo este array en la respuesta
+                    amount += prod.product.price* prod.quantity //Calculo monto total para armar ticket.
                 } else {
-                    productsOutOfStock.push(prod)
+                    productsOutOfStock.push(prod) //Los que no tiene stock suficientes los pusheo en otro array para especificarlo tambien en la respuesta
                 }
             }
             return { productsToBuy, productsOutOfStock, amount}

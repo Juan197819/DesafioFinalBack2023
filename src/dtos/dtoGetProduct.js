@@ -6,6 +6,7 @@ export function dtoProduct(product) {
         price: product.price,
         stock: product.stock,
         category: product.category,
-        thumbnail: product.thumbnail
+        thumbnail: product.thumbnail,
+        owner: product.owner
     }
 }

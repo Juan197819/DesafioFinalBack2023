@@ -9,8 +9,8 @@
             </div>
             <p class="precio">Precio: ${{this.price}}</p>
             <p class="envio">Envio Gratis</p>
-            <p class="stock">Stock: {{this.stock}}</p>
-            <button class="botonAgregarCarrito" onclick='return agregarAlCarrito("{{this.id}}","{{../email}}")' >Agregar a carrito</button>
+            <p class="stock">Stock: {{this.stock}} </p>
+            <button class="botonAgregarCarrito" data-owner="{{this.owner}}" onclick='return addToCart("{{this.id}}","{{../email}}")' >Agregar a carrito</button>
         </div>
     {{/each}}
 </div>

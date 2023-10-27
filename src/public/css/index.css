@@ -148,3 +148,6 @@ h1, h2{
 li{
     font-size: 25px;
 }
+a:hover{
+    cursor: pointer;
+}

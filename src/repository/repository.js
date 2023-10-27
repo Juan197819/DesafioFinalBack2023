@@ -10,7 +10,7 @@ class Repository {
             let { limit, page, sort, ...query } = reqQuery
             const response = await daoProducts.getProducts(limit, page, sort, query)
             const products = response.payload.map(dtoProduct)
-            return products 
+            return products
         } catch (error) {
             throw error
         }
@@ -20,7 +20,7 @@ class Repository {
             let { limit, page, sort, ...query } = reqQuery
             const response = await daoProducts.getProducts(limit, page, sort, query)
             const products = response.payload.map(dtoProduct)
-            return {products,...response} 
+            return { products, ...response }
         } catch (error) {
             throw error
         }
@@ -36,21 +36,21 @@ class Repository {
     async repositoryGetUsersById(id) {
         try {
             const user = await daoUsers.getUserById(id)
-            return dtoProfile(user) 
+            return dtoProfile(user)
         } catch (error) {
             throw error
         }
     }
-    async repositoryGetUserFromSession(user) {
+    async repositoryGetUserRes(user) {
         try {
-            return dtoProfile(user) 
+            return dtoProfile(user)
         } catch (error) {
             throw error
         }
     }
     async repositoryGetAllUsers() {
         try {
-            const users =  await daoUsers.getAllUsers()
+            const users = await daoUsers.getAllUsers()
             return users.map(dtoProfile)
         } catch (error) {
             throw error

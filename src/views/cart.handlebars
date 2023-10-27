@@ -39,10 +39,9 @@
                 </tr>
             </tfoot>
         </table>
-        <button onclick="return buyCart('{{cid}}')">Comprar carrito</button>
+        <a class="botonLogout" onclick="return buyCart('{{cid}}')">Comprar carrito</a>
         {{else}}
     <h1>Carrito Vacio</h1>
     {{/if}}
 </div>
-<script>
-</script>
+<script src="../js/buyCart.js"></script>

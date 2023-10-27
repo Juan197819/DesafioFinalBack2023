@@ -22,7 +22,6 @@ async function login(req, email, password, done) {
         } else {
             throw new errorCustom('Unauthorized', 401, 'Login Failed, email or password incorrect! ')                
         }
-
     } catch (error) {
         return done(error)
     }

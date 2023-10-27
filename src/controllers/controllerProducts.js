@@ -33,16 +33,17 @@ class ControllerProducts {
         try {
             const product = req.body
             const {pid} = req.params
-            const {email} = req.user
-            res.status(200).json(await serviceProducts.serviceUpdateProduct(pid, product, email))
+            const {email, rol} = req.user
+            res.status(200).json(await serviceProducts.serviceUpdateProduct(pid, product, email, rol))
         } catch (error) {
             next(error)
         }
     }
     async controllerDeleteProduct (req, res, next){
         try {
-            const {pid} = req.params
-            res.status(200).json(await serviceProducts.serviceDeleteProduct(pid))
+            const { pid } = req.params
+            const { rol, email } = req.user
+            res.status(200).json(await serviceProducts.serviceDeleteProduct(pid, rol, email))
         } catch (error) {
             next(error)
         }

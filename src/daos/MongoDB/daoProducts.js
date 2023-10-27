@@ -70,7 +70,7 @@ class DaoProducts {
         }
     }
     async deleteProduct(id){
-        try { 
+        try {
             const product= await ModelProducts.findByIdAndDelete(id)
             if (!product) throw new errorCustom('Not Found', 404, `Product ID ${id} not found, failed product removal`)
             return (`Product id ${id} successfully deleted`);

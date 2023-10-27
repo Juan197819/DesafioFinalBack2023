@@ -11,8 +11,8 @@ export function isUser(req, res, next) {
     } else {
 
         //? Si la peticion no viene de la vista de SWAGGER entonces evaluo si es GET pasa y sino evaluo si esta logueado y si esta autorizado segun rol. El metodo GET pasa para cualquier usuario sin loguearse.
-
-        if (req.method == 'GET' || (req.isAuthenticated() && req.user.rol == 'Usuario')) {
+        
+        if (req.method == 'GET' || (req.isAuthenticated() && req.user.rol != 'Administrador')) {
             next()
         } else {
             throw new errorCustom('Forbidden', 403, 'Access denied!! (Route only for user)')

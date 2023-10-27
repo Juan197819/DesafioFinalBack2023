@@ -1,4 +1,3 @@
-import { errorCustom } from "../middleware/errorHandler.js"
 import { serviceCarts } from "../services/serviceCarts.js"
 
 class ControllerCarts {
@@ -22,7 +21,8 @@ class ControllerCarts {
     async controllerAddProductToCart (req, res, next){
         try {
             const {cid, pid} = req.params
-            const cart = await serviceCarts.serviceAddProductToCart(cid, pid)
+            const {email} = req.user
+            const cart = await serviceCarts.serviceAddProductToCart(cid, pid, email)
             res.status(200).json(cart)
         } catch (error) {
             next(error)

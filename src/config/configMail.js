@@ -11,7 +11,7 @@ const transport = createTransport({
     }
 })
 
-async function sendEmail (subject, bodyMail, receiver){
+async function sendEmail(subject, bodyMail, receiver) {
     try {
         const info = await transport.sendMail({
             from: config.EMAIL_TO_SEND,
@@ -22,7 +22,7 @@ async function sendEmail (subject, bodyMail, receiver){
         )
         logger.info(JSON.stringify(info))
     } catch (error) {
-        logger.error(error);
+        logger.error('Error sending email: ' +(error.stack));
     }
 }
 export const purchaseData = (purchaseData) => {
